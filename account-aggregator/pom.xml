@@ -36,5 +36,6 @@
   </build>
    <modules>
    	<module>../account-email</module>
+   	<module>../../account-persist</module>
    </modules>
 </project>
