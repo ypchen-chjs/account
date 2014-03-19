@@ -11,6 +11,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
@@ -31,8 +32,11 @@ public class AccountPersistServiceImpl implements AccountPersistService {
 	
 	@Override
 	public Account createAccount(Account account) throws AccountPersistException {
-		// TODO Auto-generated method stub
-		return null;
+		Document doc = readDocument();
+		Element accountsEle = doc.getRootElement().element("ELEMENT_ACCOUNTS");
+		accountsEle.add(buildAccountElement(account));
+		writeDocument(doc);
+		return account;
 	}
 
 	@Override
@@ -56,17 +60,38 @@ public class AccountPersistServiceImpl implements AccountPersistService {
 		account.setActivated("true".equals(element.elementText(ELEMENT_ACCOUNT_ACTIVATED)) ? true : false);
 		return account;
 	}
+	
+	private Element buildAccountElement(Account account){
+		Element element = DocumentFactory.getInstance()
+				.createElement(ELEMENT_ACCOUNT);
+		element.addElement(ELEMENT_ACCOUNT_ID).setText(account.getId());
+		element.addElement("ELEMENT_ACCOUNT_NAME").setText(account.getName());
+		element.addElement("ELEMENT_ACCOUNT_EMAIL").setText(account.getEmail());
+		element.addElement("ELEMENT_ACCOUNT_PASSWORD").setText(account.getPassword());
+		element.addElement("ELEMENT_ACCOUNT_ACTIVATED").setText(account.isActivated() ? "true" : "false");
+		return element;
+	}
 
 	@Override
 	public Account updateAccount(Account account) throws AccountPersistException {
-		// TODO Auto-generated method stub
+		if(readAccount(account.getId()) != null){
+			deleteAccount(account.getId());
+			return createAccount(account);
+		}
 		return null;
 	}
 
 	@Override
 	public void deleteAccount(String id) throws AccountPersistException {
-		// TODO Auto-generated method stub
-
+		Document doc = readDocument();
+		Element accountsEle = doc.getRootElement().element(ELEMENT_ACCOUNTS);
+		for(Element accountEle : (List<Element>)accountsEle.elements()){
+			if(accountEle.elementText(ELEMENT_ACCOUNT_ID).equals(id)){
+				accountEle.detach();
+				writeDocument(doc);
+				return;
+			}
+		}
 	}
 
 	private Document readDocument() throws AccountPersistException{
