@@ -11,6 +11,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
@@ -75,10 +76,13 @@ public class AccountPersistServiceImpl implements AccountPersistService {
 		account.setActivated("true".equals(element.elementText(ELEMENT_ACCOUNT_ACTIVATED)) ? true : false);
 		return account;
 	}
-
+	
 	@Override
 	public Account updateAccount(Account account) throws AccountPersistException {
-		// TODO Auto-generated method stub
+		if(readAccount(account.getId()) != null){
+			deleteAccount(account.getId());
+			return createAccount(account);
+		}
 		return null;
 	}
 
