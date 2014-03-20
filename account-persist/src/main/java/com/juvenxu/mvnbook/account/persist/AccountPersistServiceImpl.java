@@ -84,8 +84,15 @@ public class AccountPersistServiceImpl implements AccountPersistService {
 
 	@Override
 	public void deleteAccount(String id) throws AccountPersistException {
-		// TODO Auto-generated method stub
-
+		Document doc = readDocument();
+		Element accountsEle = doc.getRootElement().element(ELEMENT_ACCOUNTS);
+		for(Element accountEle : (List<Element>)accountsEle.elements()){
+			if(accountEle.elementText(ELEMENT_ACCOUNT_ID).equals(id)){
+				accountEle.detach();
+				writeDocument(doc);
+				return;
+			}
+		}
 	}
 
 	private Document readDocument() throws AccountPersistException{
