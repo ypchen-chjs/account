@@ -31,9 +31,28 @@ public class AccountPersistServiceImpl implements AccountPersistService {
 	
 	@Override
 	public Account createAccount(Account account) throws AccountPersistException {
-		// TODO Auto-generated method stub
-		return null;
+		Document doc = readDocument();
+		
+		Element accountsEls = doc.getRootElement().element(ELEMENT_ACCOUNTS);
+		
+		accountsEls.add( buildAccountElement(account) );
+		
+		writeDocument(doc);
+		
+		return account;
 	}
+	private Element buildAccountElement( Account account )
+    {
+    	Element element = DocumentFactory.getInstance().createElement( ELEMENT_ACCOUNT );
+    	
+        element.addElement( ELEMENT_ACCOUNT_ID ).setText( account.getId() );
+    	element.addElement( ELEMENT_ACCOUNT_NAME ).setText( account.getName() );
+    	element.addElement( ELEMENT_ACCOUNT_EMAIL ).setText( account.getEmail() );
+    	element.addElement( ELEMENT_ACCOUNT_PASSWORD ).setText( account.getPassword() );
+    	element.addElement( ELEMENT_ACCOUNT_ACTIVATED ).setText( account.isActivated() ? "true" : "false" );
+    	
+    	return element;
+    }
 
 	@Override
 	public Account readAccount(String id) throws AccountPersistException {
