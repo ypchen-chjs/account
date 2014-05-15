@@ -66,6 +66,9 @@ public class AccountEmailServiceImpl implements AccountEmailService{
     		
     		if(msg.getFrom() != null)
     			helper.setFrom(msg.getFrom());
+    		
+    		if(msg.getBcc()!=null)
+    			helper.setBcc(msg.getBcc());
     			
     		helper.setText(msg.getText(),true);
     			

@@ -7,7 +7,7 @@
 		vertical-align:top;
 	}
 	table{
-		font-size:11px;
+		font-size:12px;
 		width:610px;
 		vertical-align:top;
 		border-collapse: collapse;
@@ -24,14 +24,18 @@
 	 	width:10%;
 	}
 	div {
-		font-size:11px;
+		font-size:12px;
+	}
+	div span {
+		fong-size:12px;
+		font-weight:bold;
 	}
 </style>
 </head>
 <body>
 <div>
 
-	$messages1 $note1 $messages2 $note2
+	<span>$messages1</span>&nbsp;&nbsp; $note1 &nbsp;&nbsp;<span>$messages2</span>&nbsp;&nbsp; $note2
 
 <br>
 </div>
