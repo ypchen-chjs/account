@@ -1,4 +1,4 @@
-package com.juvenxu.mvnbook.account.email;
+package com.cymmetrik.account.email;
 
 import javax.mail.MessagingException;
 

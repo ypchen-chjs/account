@@ -2,11 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
-	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:service.properties" />
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:account-email.properties" />
 	</bean>
-	<bean id="javaMailSender"
-		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	<bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="protocol" value="${email.protocol}"></property>
 		<property name="host" value="${email.host}"></property>
 		<property name="port" value="${email.port}"></property>
@@ -18,8 +18,31 @@
 			</props>
 		</property>
 	</bean>
-	<bean id="accountEmailService" class="com.juvenxu.mvnbook.account.email.AccountEmailServiceImpl">
+	<!-- <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean"> -->
+	<!-- <property name="velocityProperties"> -->
+	<!-- <value> -->
+	<!-- resource.loader=class -->
+	<!-- class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader -->
+	<!-- </value> -->
+	<!-- </property> -->
+	<!-- </bean> -->
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<props>
+				<prop key="resource.loader">class</prop>
+				<prop key="class.resource.loader.class">
+					org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+				</prop>
+				<!-- <prop key="velocimacro.library"></prop> -->
+			</props>
+		</property>
+	</bean>
+	<bean id="accountEmailService" class="com.cymmetrik.account.email.AccountEmailServiceImpl">
 		<property name="javaMailSender" ref="javaMailSender"></property>
-		<property name="systemEmail" value="${email.systemEmail}"></property>
+		<property name="systemEmail" value="${email.fromEmail}"></property>
+		<property name="velocityEngine" ref="velocityEngine"></property>
+	</bean>
+	<bean id="simpleMailMessage" class="org.springframework.mail.SimpleMailMessage">
+		<property name="from" value="${email.fromEmail}" />
 	</bean>
 </beans>

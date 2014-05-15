@@ -1,4 +1,4 @@
-package com.juvenxu.mvnbook.account.email;
+package com.cymmetrik.account.email;
 
 import static org.junit.Assert.*;
 
@@ -30,14 +30,27 @@ public class AccountEmailServiceTest {
 		AccountEmailService accountEmailService = (AccountEmailService) ctx.getBean("accountEmailService");
 		String subject = "Test Subject";
 		String htmlText = "<h3>Test</h3>";
-		accountEmailService.sendMail("yiping@juvenxu.com", subject, htmlText);
+		
+		accountEmailService.sendMail("yiping.chen@cymmetrik.com", subject, htmlText);
+		
+//		SimpleMailMessage msg = new SimpleMailMessage();
+//		msg.setFrom("yiping.chen@cymmetrik.com");
+//		msg.setTo("yiping.chen@cymmetrik.com");
+//		msg.setSubject("測試");
+//		Map<String, Object> model = new HashMap<String, Object>();
+//		model.put("messages1", "ABC");
+//		model.put("messages2", "XYZ");
+//		model.put("note1", " 您好 您有一筆 ");
+//		model.put("note2", "項目，需要審核。 ");
+//		
+//		accountEmailService.sendMailWithVelocity(msg, "mail.vm", model);
 		greenMail.waitForIncomingEmail(2000, 1);
 		
 		Message[] msgs = greenMail.getReceivedMessages();
 		assertEquals(1,msgs.length);
 		assertEquals(subject,msgs[0].getSubject());
 		assertEquals(htmlText,GreenMailUtil.getBody(msgs[0]).trim());
-	
+//	
 	}
 	
 	@After
