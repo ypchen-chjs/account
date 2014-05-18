@@ -71,9 +71,8 @@
 			<groupId>velocity-tools</groupId>
 			<artifactId>velocity-tools-view</artifactId>
 			<version>1.4 </version>
-		</dependency>
+		</dependency> 
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
